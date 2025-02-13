@@ -10,7 +10,9 @@
           </span>
         </h3>
         <p class="text-[#333333]/90 text-lg mb-2">
-          赠送{{ payment.customer }}价值 {{ payment.giftPrice }} 元{{ payment.gift }}
+          赠送{{ payment.customer }}
+          <template v-if="settingsStore.showGiftPrice">价值 {{ payment.giftPrice }} 元</template>
+          {{ payment.gift }}
         </p>
         <p class="text-[#333333]/80">{{ payment.thankText }}</p>
       </div>
@@ -24,10 +26,13 @@
 
 <script lang="ts" setup>
 import type { Payment } from '../store/payment'
+import { useSettingsStore } from '../store/settings'
 
 defineProps<{
   payment: Payment
 }>()
+
+const settingsStore = useSettingsStore()
 
 const formatAmount = (amount: number) => {
   return (amount * 10000).toLocaleString()

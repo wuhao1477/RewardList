@@ -10,6 +10,26 @@
         </div>
       </div>
 
+      <!-- 显示设置 -->
+      <div class="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8">
+        <h3 class="text-lg font-semibold mb-4 text-gray-800">显示设置</h3>
+        <div class="space-y-4">
+          <div class="flex items-center justify-between bg-white rounded-lg p-4 shadow-sm">
+            <div>
+              <div class="font-medium text-gray-800">显示礼品价值</div>
+              <div class="text-sm text-gray-600">控制是否在打款记录中显示礼品的价值</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" 
+                     :checked="settingsStore.showGiftPrice"
+                     @change="settingsStore.toggleGiftPrice()"
+                     class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+            </label>
+          </div>
+        </div>
+      </div>
+
       <!-- 数据统计 -->
       <div class="bg-gradient-to-r from-primary/10 to-primary/5 rounded-lg p-6 mb-8">
         <h3 class="text-lg font-semibold mb-4 text-gray-800">数据统计</h3>
@@ -121,7 +141,10 @@
             class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
             <div class="flex-1">
               <div class="font-medium">财主{{ payment.customer }} - {{ formatAmountWithUnit(payment.amount) }}</div>
-              <div class="text-sm text-gray-600">{{ payment.gift }} ({{ payment.giftPrice }}元)</div>
+              <div class="text-sm text-gray-600">
+                {{ payment.gift }}
+                <template v-if="settingsStore.showGiftPrice">({{ payment.giftPrice }}元)</template>
+              </div>
               <div class="text-sm text-gray-500">{{ payment.thankText }}</div>
             </div>
             <div class="flex items-center space-x-2">
@@ -244,7 +267,10 @@
             class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
             <div class="flex-1">
               <div class="font-medium">财主{{ payment.customer }} - {{ formatAmountWithUnit(payment.amount) }}</div>
-              <div class="text-sm text-gray-600">{{ payment.gift }} ({{ payment.giftPrice }}元)</div>
+              <div class="text-sm text-gray-600">
+                {{ payment.gift }}
+                <template v-if="settingsStore.showGiftPrice">({{ payment.giftPrice }}元)</template>
+              </div>
               <div class="text-sm text-gray-500">{{ payment.thankText }}</div>
             </div>
             <div class="flex items-center space-x-2">
@@ -274,9 +300,11 @@ import { usePaymentStore, type Payment } from '../store/payment'
 import { useGiftStore } from '../store/gift'
 import GiftManager from '../components/GiftManager.vue'
 import PaymentSettings from '../components/PaymentSettings.vue'
+import { useSettingsStore } from '../store/settings'
 
 const store = usePaymentStore()
 const giftStore = useGiftStore()
+const settingsStore = useSettingsStore()
 
 const activeTab = ref('records')
 const showAddForm = ref(false)
