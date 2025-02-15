@@ -49,6 +49,7 @@ const formatAmountWithUnit = (amount: number) => {
 
 <style scoped>
 .payment-card {
+  min-width: 100%;
   transition: all 0.5s ease;
   box-shadow: 0 8px 15px -3px rgba(157, 31, 53, 0.1), 0 4px 6px -2px rgba(157, 31, 53, 0.05);
 }
